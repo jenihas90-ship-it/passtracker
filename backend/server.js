@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 require('dotenv').config();
 const { connectDB, dal } = require('./db');
 
@@ -214,13 +215,21 @@ app.post('/api/reset', async (req, res) => {
   }
 });
 
-// 7. Serve Static Frontend in production / unified mode
+// 7. Serve Static Frontend in production / unified single-port mode
 const frontendDist = path.join(__dirname, '../frontend/dist');
-app.use(express.static(frontendDist));
-app.get('*', (req, res, next) => {
-  if (req.path.startsWith('/api')) return next();
-  res.sendFile(path.join(frontendDist, 'index.html'));
-});
+if (fs.existsSync(frontendDist)) {
+  console.log(`[Static Serving] Serving production React frontend from ${frontendDist}`);
+  app.use(express.static(frontendDist));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+    res.sendFile(path.join(frontendDist, 'index.html'));
+  });
+} else {
+  console.warn(`[Static Serving] Warning: ${frontendDist} not found. Run 'npm run build' to generate the client build.`);
+  app.get('/', (req, res) => {
+    res.send(`<h2>PassTrack Ethiopian ICS Backend API is running on port ${PORT}.</h2><p>To serve the full-stack app, run <code>npm run build</code>.</p>`);
+  });
+}
 
 // Start Server
 connectDB().then(() => {

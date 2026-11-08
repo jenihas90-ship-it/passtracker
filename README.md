@@ -49,13 +49,15 @@ The existing Ethiopian Immigration and Citizenship Service (ICS) passport tracki
 
 ---
 
-## 🚀 Quick Start Guide
+## 🚀 Unified Full-Stack Architecture (Frontend + Backend on One)
+
+PassTrack is packaged as a **single unified service** where the Express backend serves both the RESTful API / webhooks AND the production React client from a single port (`5000` or `process.env.PORT`).
 
 ### 1. Requirements
 - Node.js (v18+)
 - npm
 
-### 2. Run the Full Application (Single Command)
+### 2. Run Full Application on One Single Port (Zero Setup)
 From the root directory:
 ```bash
 npm start
@@ -63,16 +65,16 @@ npm start
 Open your browser to:
 👉 **[http://localhost:5000](http://localhost:5000)**
 
-### 3. Alternative: Running in Dev Mode
-To run with live hot reloading:
-```bash
-# Terminal 1: Backend
-npm run dev:backend
+Both the frontend React client and the backend APIs run simultaneously on port 5000 with pre-seeded ICS data!
 
-# Terminal 2: Frontend
-npm run dev:frontend
+### 3. Development Mode (Unified Concurrent Runner)
+Run frontend with Vite HMR and backend with Node watcher concurrently in a single terminal:
+```bash
+npm run dev
 ```
-Frontend will be running on `http://localhost:3000` (proxying `/api` to `http://localhost:5000`).
+- Frontend: `http://localhost:3000`
+- Backend API: `http://localhost:5000`
+- Webhook Receiver: `http://localhost:5000/api/webhook/ics-status-update`
 
 ---
 
