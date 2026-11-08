@@ -1,0 +1,21 @@
+{
+  "name": "passtrack-ethiopian-ics",
+  "version": "1.0.0",
+  "description": "PassTrack - Next-Generation Passport Tracking for Ethiopian ICS (Cursor Hackathon South West Ethiopia / Innobiz-K)",
+  "scripts": {
+    "start": "node backend/server.js",
+    "build": "cd frontend && npm run build",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev"
+  },
+  "keywords": [
+    "passport-tracker",
+    "ethiopia",
+    "ics",
+    "gov-tech",
+    "hackathon",
+    "cursor"
+  ],
+  "author": "Jenihas Getachew | Jeni High Technology",
+  "license": "MIT"
+}
