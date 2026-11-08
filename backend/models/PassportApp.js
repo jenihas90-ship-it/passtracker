@@ -20,4 +20,6 @@ const passportApplicationSchema = new mongoose.Schema({
   discrepancyNotes: { type: String, default: null } 
 });
 
+passportApplicationSchema.index({ applicantName: 'text' });
+
 module.exports = mongoose.model('PassportApp', passportApplicationSchema);

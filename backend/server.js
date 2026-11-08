@@ -7,8 +7,14 @@ const { connectDB, dal } = require('./db');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const passportRoutes = require('./routes/passport');
+
 app.use(cors());
 app.use(express.json());
+
+// Passport routes
+app.use('/api/passport', passportRoutes);
+app.use('/api', passportRoutes);
 
 // Helper: Normalize Ethiopian phone numbers
 function normalizeEthiopianPhone(phone) {

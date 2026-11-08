@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import SearchCard from './components/SearchCard';
+import NameSearch from './components/NameSearch';
 import ResultCard from './components/ResultCard';
 import DiscrepancyModal from './components/DiscrepancyModal';
 import TelegramAlertModal from './components/TelegramAlertModal';
 import AdminPortal from './components/AdminPortal';
 import { translations } from './i18n/translations';
-import { ShieldCheck, HelpCircle, Sparkles, Building2, ExternalLink } from 'lucide-react';
+import { ShieldCheck, HelpCircle, Sparkles, Building2, ExternalLink, User, Search } from 'lucide-react';
 
 export default function App() {
   const [lang, setLang] = useState('en');
   const [viewMode, setViewMode] = useState('citizen'); // 'citizen' or 'admin'
+  const [searchTab, setSearchTab] = useState('mfa'); // 'mfa' or 'name'
   const [appNumber, setAppNumber] = useState('');
   const [phone, setPhone] = useState('');
   const [application, setApplication] = useState(null);
@@ -137,18 +139,57 @@ export default function App() {
               </p>
             </div>
 
-            {/* Multi-Factor Search Form Card */}
-            <SearchCard
-              appNumber={appNumber}
-              setAppNumber={setAppNumber}
-              phone={phone}
-              setPhone={setPhone}
-              onSearch={handleSearch}
-              onClear={handleClear}
-              loading={loading}
-              error={error}
-              t={t}
-            />
+            {/* Search Mode Tabs */}
+            <div className="flex justify-center">
+              <div className="inline-flex bg-slate-200/80 p-1 rounded-xl">
+                <button
+                  type="button"
+                  onClick={() => setSearchTab('mfa')}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+                    searchTab === 'mfa'
+                      ? 'bg-white text-emerald-800 shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <ShieldCheck className="h-4 w-4 text-emerald-600" />
+                  <span>Multi-Factor (Ref + Phone)</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSearchTab('name')}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+                    searchTab === 'name'
+                      ? 'bg-white text-emerald-800 shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <User className="h-4 w-4 text-emerald-600" />
+                  <span>Search by Name (የስም ፍለጋ)</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Conditionally Render Search Method */}
+            {searchTab === 'mfa' ? (
+              <SearchCard
+                appNumber={appNumber}
+                setAppNumber={setAppNumber}
+                phone={phone}
+                setPhone={setPhone}
+                onSearch={handleSearch}
+                onClear={handleClear}
+                loading={loading}
+                error={error}
+                t={t}
+              />
+            ) : (
+              <NameSearch
+                onSelectApplication={(appNo) => {
+                  setAppNumber(appNo);
+                  setSearchTab('mfa');
+                }}
+              />
+            )}
 
             {/* Tracking Result Card */}
             {application && (
