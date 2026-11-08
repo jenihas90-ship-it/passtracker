@@ -8,11 +8,13 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 const passportRoutes = require('./routes/passport');
+const webhookRoutes = require('./routes/webhook');
 
 app.use(cors());
 app.use(express.json());
 
-// Passport routes
+// Webhook & Passport routes
+app.use('/api/webhook', webhookRoutes);
 app.use('/api/passport', passportRoutes);
 app.use('/api', passportRoutes);
 
